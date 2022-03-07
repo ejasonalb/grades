@@ -40,6 +40,7 @@ double grade(double midterm, double final, double homework){
 }
 
 int main(){
+  
     // ask for student's name
     cout << "Please enter you name: ";
     string name;
@@ -63,7 +64,8 @@ int main(){
     while (cin >> x){
         homework.push_back(x);
     }
-    
+
+    // print grade
     streamsize prec = cout.precision();
     cout << "Your final grade is " << setprecision(3)
          << grade(midterm, final, median(homework))
