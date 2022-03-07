@@ -33,6 +33,11 @@ double median(vector<double> vec){
 
 }
   
+double grade(double midterm, double final, double homework){
+
+  return 0.2*midterm + 0.4*final + 0.4*homework;
+    
+}
 
 int main(){
     // ask for student's name
@@ -61,7 +66,7 @@ int main(){
     
     streamsize prec = cout.precision();
     cout << "Your final grade is " << setprecision(3)
-         << 0.2*midterm + 0.4*final + 0.4*median(homework)
+         << grade(midterm, final, median(homework))
          << setprecision(prec) << endl;
 
     return 0;
