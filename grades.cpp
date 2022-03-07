@@ -42,6 +42,12 @@ double grade(double midterm, double final, double homework){
     
 }
 
+double grade(double midterm, double final, const vector<double>& hw){
+  if (hw.size() == 0)
+    throw domain_error("Student has submitted no homework grades");
+  return grade(midterm, final, median(hw));
+}
+
 int main(){
   
     // ask for student's name
@@ -71,7 +77,7 @@ int main(){
     // print grade
     streamsize prec = cout.precision();
     cout << "Your final grade is " << setprecision(3)
-         << grade(midterm, final, median(homework))
+         << grade(midterm, final, homework)
          << setprecision(prec) << endl;
 
     return 0;
