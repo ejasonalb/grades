@@ -7,6 +7,33 @@
 
 using namespace std;
 
+double median(vector<double> vec){
+
+  //store size of homework vector
+    typedef vector<double>::size_type vec_sz;
+    vec_sz size = vec.size();
+
+    if (size == 0){
+      cout << "You must enter your grades."
+	"Please try again." << endl;
+      return 1;
+    }
+
+    //sort homework scores
+    sort(vec.begin(), vec.end());
+
+    //compute median score
+    vec_sz mid = size/2;
+    double median;
+
+    median = size % 2 ? (vec[mid] + vec[mid-1])/2
+                        : vec[mid];
+
+    return median;
+
+}
+  
+
 int main(){
     // ask for student's name
     cout << "Please enter you name: ";
@@ -31,30 +58,10 @@ int main(){
     while (cin >> x){
         homework.push_back(x);
     }
-
-    //store size of homework vector
-    typedef vector<double>::size_type vec_sz;
-    vec_sz size = homework.size();
-
-    if (size == 0){
-      cout << "You must enter your grades."
-	"Please try again." << endl;
-      return 1;
-    }
-
-    //sort homework scores
-    sort(homework.begin(), homework.end());
-
-    //compute median score
-    vec_sz mid = size/2;
-    double median;
-
-    median = size % 2 ? (homework[mid] + homework[mid-1])/2
-      : homework[mid];
     
     streamsize prec = cout.precision();
     cout << "Your final grade is " << setprecision(3)
-         << 0.2*midterm + 0.4*final + 0.4*median
+         << 0.2*midterm + 0.4*final + 0.4*median(homework)
          << setprecision(prec) << endl;
 
     return 0;
