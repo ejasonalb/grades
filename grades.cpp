@@ -1,3 +1,6 @@
+/* Computing student grades examples from  Accelerated C++ 
+   by Andrew Koenig and Barbara E. Moo */
+
 #include <algorithm>
 #include <iostream>
 #include <iomanip>
