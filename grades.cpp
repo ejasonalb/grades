@@ -1,4 +1,4 @@
-/* Computing student grades examples from  Accelerated C++ 
+/* Computing student grades example from "Accelerated C++" 
    by Andrew Koenig and Barbara E. Moo */
 
 #include <algorithm>
@@ -6,9 +6,20 @@
 #include <iomanip>
 #include <ios>
 #include <string>
+#include <stdexcept>
 #include <vector>
 
 using namespace std;
+
+struct Student_info {
+  string name;
+  double midterm, final;
+  vector<double> homework;
+}; // note the semicolon--it's required
+
+bool compare(const Student_info& x, const Student_info& y){
+  return x.name < y.name;
+}
 
 double median(vector<double> vec){
 
@@ -48,8 +59,12 @@ double grade(double midterm, double final, const vector<double>& hw){
   return grade(midterm, final, median(hw));
 }
 
+double grade(const Student_info& s){
+  return grade(s.midterm, s.final, s.homework);
+}
+
 // read homework grades from an input stream into a vector<double>
-istream& readhw(istream& in, vector<double>& hw){
+istream& read_hw(istream& in, vector<double>& hw){
 
   if (in) {
     // get rid of previous contents
@@ -66,43 +81,50 @@ istream& readhw(istream& in, vector<double>& hw){
   return in;
 }
 
+istream& read(istream& is, Student_info& s){
+  //read and store the student's name and midterm and final exam grades
+  is >> s.name >> s.midterm >> s.final;
+
+  read_hw(is, s.homework);
+  return is;
+}
+
 int main(){
-  
-    // ask for student's name
-    cout << "Please enter you name: ";
-    string name;
-    cin >> name;
-    cout << "Hello, " + name + "!" << endl;
 
-    // ask for the midterm and final grades
-    cout << "Please enter you midterm and final grades: "; 
-    double midterm, final;
-    cin >> midterm >> final;
+    vector<Student_info> students;
+    Student_info record;
 
-    // ask for homework grades
-    cout << "Enter all of your homework grades, "
-            "followed by end-of-file: ";
+    string::size_type maxlen = 0;
 
-    // variable into which to read grades
-    vector<double> homework;
-
-    // read the homework grades
-    readhw(cin, homework);
-
-    // compute and print final grade, if possible
-    try {
-      double final_grade = grade(midterm, final, homework);
-      streamsize prec = cout.precision();
-      cout << "Your final grade is " << setprecision(3)
-	   << final_grade << endl;
+    //read and store the records and find the length of the longest name
+    while (read(cin, record)){
+      maxlen = max(maxlen, record.name.size());
+      students.push_back(record);
     }
 
-    catch (domain_error) {
+    //alphabetize records
+    sort(students.begin(), students.end(), compare);
 
-      cout << endl << "You must enter your grades. "
-	" Please try again." << endl;
-      return 1;
-     }
+    cout << endl;
+    
+    for (vector<Student_info>::size_type i = 0;
+	 i != students.size(); ++i){
+      
+      // write the name, padded to maxlen+1 characters
+      cout << setw(maxlen+1) << students[i].name << setw(maxlen);
+
+      //compute and write the grade
+      try {
+	double final_grade = grade(students[i]);
+	streamsize prec = cout.precision();
+	cout << setprecision(3) << final_grade
+	     << setprecision(prec);
+      } catch (domain_error e) {
+	cout << e.what();
+      }
+      
+      cout << endl;
+    }
 
     return 0;
 }
