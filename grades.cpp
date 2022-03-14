@@ -32,22 +32,24 @@ int main(){
     cout << endl;
     
     for (vector<Student_info>::size_type i = 0;
-	 i != students.size(); ++i){
+    
+    i != students.size(); ++i){
       
       // write the name, padded to maxlen+1 characters
       cout << setw(maxlen+1) << students[i].name << setw(maxlen);
 
       //compute and write the grade
       try {
-	double final_grade = grade(students[i]);
-	streamsize prec = cout.precision();
-	cout << setprecision(3) << final_grade
-	     << setprecision(prec);
-      } catch (domain_error e) {
-	cout << e.what();
-      }
-      
-      cout << endl;
+        double final_grade = grade(students[i]);
+        streamsize prec = cout.precision();
+        cout << setprecision(3) << final_grade
+        << setprecision(prec);
+        } catch (domain_error e) {
+          cout << e.what();
+          }
+          
+          cout << endl;
+    
     }
 
     return 0;
