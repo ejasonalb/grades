@@ -13,6 +13,28 @@
 
 using namespace std;
 
+// check if student has a failing grade
+bool fgrade(const Student_info& s){
+  return grade(s) < 60;
+}
+
+vector<Student_info> extract_fails(vector<Student_info>& students) {
+  
+  vector<Student_info> fail;
+  vector<Student_info>::size_type i = 0;
+  // store students with failing grade in fail
+  while (i != students.size()) {
+    if (fgrade(students[i])) {
+      // add student to vector of fails
+      fail.push_back(students[i]);
+      // remove student record from vector
+      students.erase(students.begin() + i);
+    } else
+      ++i;
+  }
+      return fail;
+}
+
 int main(){
 
     vector<Student_info> students;
@@ -29,26 +51,26 @@ int main(){
     //alphabetize records
     sort(students.begin(), students.end(), compare);
 
-    cout << endl;
+    // extract failing grades
+    vector<Student_info> fail = extract_fails(students);
     
     for (vector<Student_info>::size_type i = 0;
+    i != students.size(); ++i) {
     
-    i != students.size(); ++i){
-      
-      // write the name, padded to maxlen+1 characters
-      cout << setw(maxlen+1) << students[i].name << setw(maxlen);
+    // write the name, padded to maxlen+1 characters
+    cout << setw(maxlen+1) << fail[i].name << setw(maxlen);
 
-      //compute and write the grade
-      try {
-        double final_grade = grade(students[i]);
-        streamsize prec = cout.precision();
-        cout << setprecision(3) << final_grade
-        << setprecision(prec);
-        } catch (domain_error e) {
-          cout << e.what();
-          }
+    //compute and write the grade
+    try {
+      double final_grade = grade(fail[i]);
+      streamsize prec = cout.precision();
+      cout << setprecision(3) << final_grade
+      << setprecision(prec);
+      } catch (domain_error e) {
+        cout << e.what();
+        }
           
-          cout << endl;
+    cout << endl;
     
     }
 
